@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshramPoc", "EshramPoc\EshramPoc.csproj", "{74BC4040-5D15-4F0D-8AF0-02128CF9A170}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74BC4040-5D15-4F0D-8AF0-02128CF9A170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74BC4040-5D15-4F0D-8AF0-02128CF9A170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74BC4040-5D15-4F0D-8AF0-02128CF9A170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74BC4040-5D15-4F0D-8AF0-02128CF9A170}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6542FA57-1785-4A30-B9F7-96914EE38D26}
+	EndGlobalSection
+EndGlobal
