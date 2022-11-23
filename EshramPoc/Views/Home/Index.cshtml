@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="twitter:title" content="Intelligent Document Extraction">
+    <meta property="og:title" content="Intelligent Document Extraction">
+
+    <!-- App favicon
+    <link rel="shortcut icon" href="~/Asset/img/JSN Logo_Updated.png">-->
+
+    <link rel="shortcut icon" href="https://www.cyient.com/hubfs/enhancer.png">
+    <!-- Meta -->
+    <meta name="description" content="Document Extraction">
+    <meta name="author" content="JSN">
+
+
+    <title>Document Extraction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bracket CSS -->
+    <link rel="stylesheet" href="~/Asset/css/bracket.css">
+
+    <style>
+        .show_more_div {
+            display: none;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        mark {
+            background: orange;
+            color: unset;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        button#search_btn {
+            box-shadow: none;
+        }
+
+        .label_align_class {
+            display: flex;
+            align-items: center;
+        }
+
+        .custom_img_border {
+            border: 1px solid #868ba1;
+        }
+
+        .iframeWrapper {
+            display: inline-block;
+            position: relative;
+        }
+
+            .iframeWrapper:after { /* I have higher Z-index so I can catch the click! Yey */
+                content: "";
+                position: absolute;
+                z-index: 1;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                cursor: pointer;
+            }
+
+            .iframeWrapper iframe {
+                vertical-align: top;
+            }
+
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid blue;
+            border-bottom: 16px solid blue;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+            position: absolute;
+            top: calc(20% - 15px);
+            left: calc(50% - 45px);
+            text-align: center;
+        }
+
+        .line_data_align {
+            margin: 0 0 1px;
+        }
+
+        .content_tab_layout {
+            height: 420px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .btn-success {
+            color: #fff !important;
+            background-color: #007bff !important;
+            border-color: #007bff !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ########## START: LEFT PANEL ########## -->
+    @RenderPage("~/Views/Shared/_Side_bar.cshtml")
+    <!-- ########## END: LEFT PANEL ########## -->
+    <!-- ########## START: HEAD PANEL ########## -->
+    @RenderPage("~/Views/Shared/_Header.cshtml")
+    <!-- ########## END: HEAD PANEL ########## -->
+    <!-- main - display area  -->
+
+    <div class="br-mainpanel">
+        <div class="br-pageheader pd-y-0 pd-l-20">
+        </div><!-- br-pageheader -->
+        <div class="br-pagebody">
+            <div class="br-section-wrapper p-0">
+                <div class="row justify-content-center" id="initial_hide">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pb-3">
+                        <div class="card bd-0">
+                            <div class="card-header bg-primary text-light">
+                                Document
+                            </div><!-- card-header -->
+                            <br>
+                            <div class="row justify-content-md-center">
+                                <div class="col-md-1">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button type="button" class="btn btn-success btnstyle_text btn-type1" onclick="get_document_content('generate_caste_certificate','btn-type1')">Social</button>
+                                    <button type="button" class="btn btn-light btnstyle_text btn-type2" onclick="get_document_content('generate_crid','btn-type2')">Income</button>
+                                    <button type="button" class="btn btn-light btnstyle_text btn-type3" onclick="get_document_content('generate_tc','btn-type3')">Occupation Certificates</button>
+                                    <button type="button" class="btn btn-light btnstyle_text btn-type4" onclick="get_document_content('generate_smc','btn-type4')">Education Certificate</button>
+                                </div>
+
+                            </div>
+                            <div class="card-body bd bd-t-0 rounded-bottom get_content_pdf" id="generate_caste_certificate">
+                                <div class="row">
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgc1014" pdf_content_id="1">
+                                        <img id="preview_imgc1014" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/Social.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgcr1003" pdf_content_id="1">
+                                        <img id="preview_imgcr1003" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/invalid.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgcr1001" pdf_content_id="1">
+                                        <img id="preview_imgc101" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/income.jpg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+
+                                </div>
+                            </div><!-- card-body -->
+                            <div class="card-body bd bd-t-0 rounded-bottom get_content_pdf" id="generate_crid">
+                                <div class="row">
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgcr1001" pdf_content_id="2">
+                                        <img id="preview_imgcr1001" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/income.jpg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgc1014" pdf_content_id="2">
+                                        <img id="preview_imgc1014" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/Social.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                    @* <div class="col-3 text-center iframeWrapper" iframeid="preview_imgcr1002" pdf_content_id="2">
+            <iframe id="preview_imgcr1002" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/pdf_document/crid/Signed form1.pdf" frameborder="0" style="width:100%;" height="250px"></iframe>
+        </div>*@
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgcr1003" pdf_content_id="2">
+                                        <img id="preview_imgcr1003" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/invalid1.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+
+
+                                </div>
+                            </div><!-- card-body -->
+                            <div class="card-body bd bd-t-0 rounded-bottom get_content_pdf" id="generate_tc">
+                                <div class="row">
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgtc1001" pdf_content_id="3">
+                                        <img id="preview_imgtc1001" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/occupation.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgc1014" pdf_content_id="3">
+                                        <img id="preview_imgc1014" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/Social.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgcr1003" pdf_content_id="3">
+                                        <img id="preview_imgtc1001" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/invalid1.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                </div>
+                            </div><!-- card-body -->
+                            <div class="card-body bd bd-t-0 rounded-bottom get_content_pdf" id="generate_smc">
+                                <div class="row">
+                                    @*<div class="col-12 text-center">
+            <h5 class="tx-gray-800 mg-b-5"> Document Type 1</h5>
+        </div>*@
+
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgsmc1017" pdf_content_id="4">
+                                        <img id="preview_imgsmc1017" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/Education.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgc1014" pdf_content_id="4">
+                                        <img id="preview_imgc1014" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/Social.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+                                    <div class="col-3 text-center iframeWrapper" iframeid="preview_imgsmc1006" pdf_content_id="4">
+                                        <img id="preview_imgsmc1006" onclick="getiframedata(this)" class="doc custom_img_border" src="~/Asset/POCimages/invalid3.jpeg" frameborder="0" style="width:100%;" height="250px"></img>
+                                    </div>
+
+
+                                </div>
+                            </div><!-- card-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row" id="invalid_image_message_div" style="display:none;">
+                        <div class="col-12">
+                            <h2 class="text-danger text-center" id="invalid_image_message"></h2>
+                        </div>
+                    </div>
+                    <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
+                        <h5 class="tx-gray-800 mg-b-5 hide_perview_document_data_pdf"> Document Preview</h5>
+                    </div>
+                    <div class="row justify-content-center py-3">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                            <div class="row hide_perview_document_data_pdf">
+                                <div class="col-12 text-center" id="div_preview_content_filepdf">
+                                    <iframe id="preview_img_display" class="doc custom_img_border" src="" style="width:100%;" height="600px"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row nav_header_content_data">
+                                <div class="col-12 text-center">
+                                    <div class="card mt-3 tab-card">
+                                        <div class="card-header tab-card-header">
+                                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true" active>Preview</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Json</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="loader" id="show_loader"></div>
+                                        <div class="tab-pane fade show active p-3 " id="one" role="tabpanel" aria-labelledby="one-tab" style="text-align: left;">
+                                            <div class="row all_pdf_content" id="content_caste_pdf">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <h5 class="card-title">Extracted Result</h5>
+                                                    <h5 class="card-title">
+                                                    </h5>
+                                                    <p class="line_data_align">Certificate: <span class="tx-gray-800" id="certificate"></span></p>
+                                                    <p class="line_data_align">Caste:  <span class="tx-gray-800" id="caste"></span></p>
+                                                    <p class="line_data_align">Son/Daughter: <span class="tx-gray-800" id="son_daughter"></span> </p>
+                                                    <p class="line_data_align">Name:  <span class="tx-gray-800" id="name"></span></p>
+                                                   
+
+                                                    @*<table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Trade Name</th>
+                                                                    <th scope="col">Supplier</th>
+                                                                    <th scope="col">Purpose</th>
+                                                                    <th scope="col">Ingredients</th>
+                                                                    <th scope="col">Chemical Abstract Service Number (CAS #)</th>
+                                                                    <th scope="col">Maximum Ingredient Concentration in Additive (% by mass)**</th>
+                                                                    <th scope="col">Maximum Ingredient Concentration in HF Fluid (% by mass)**</th>
+                                                                    <th scope="col">Comments</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="html_table_content">
+                                                            </tbody>
+                                                        </table>*@
+                                                </div>
+                                            </div>
+
+
+                                            <!-- content 2-->
+                                            <div class="row all_pdf_content" id="content_ppp_pdf">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <h5 class="card-title">Extracted Result</h5>
+                                                    @*<h5 class="card-title">PPP </h5>*@
+                                                <p class="line_data_align">Certificate_By: <span class="tx-gray-800" id="certificate_By"></span></p>
+                                                <p class="line_data_align">State: <span class="tx-gray-800" id="state"></span></p>
+                                                <p class="line_data_align">Certificate: <span class="tx-gray-800" id="certificate1"></span></p>
+                                                <p class="line_data_align">Year: <span class="tx-gray-800" id="year"></span></p>
+                                                <p class="line_data_align">Name: <span class="tx-gray-800" id="name1"></span></p>
+                                                <p class="line_data_align">Parents: <span class="tx-gray-800" id="parents"></span></p>
+                                                <p class="line_data_align">Income: <span class="tx-gray-800" id="income"></span></p>
+                                                    @*<br>*@
+                                                    @*<h5 class="card-title"> </h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Father Name</th>
+                                                                <th scope="col">Mother Name</th>
+                                                                <th scope="col">DOB</th>
+                                                                <th scope="col">Relation HH</th>
+                                                                <th scope="col">Age</th>
+                                                                <th scope="col">Mobile Number</th>
+                                                                <th scope="col">Aadhar</th>
+                                                                <th scope="col">Annual Income</th>
+                                                                <th scope="col">Occupation</th>
+                                                                <th scope="col">Caste</th>
+                                                                <th scope="col">Is Divyang</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="html_table_content_ppp">
+                                                        </tbody>
+                                                    </table>*@
+                                                </div>
+                                            </div>
+                                            <!-- content 3-->
+                                            <div class="row all_pdf_content" id="content_tc_pdf">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <h5 class="card-title">Extracted Result</h5>
+                                                    @*<h5 class="card-title">School Leaving Certificate</h5>*@
+                                                <p class="line_data_align">Certificate: <span class="tx-gray-800" id="certificate2"></span></p>
+                                                <p class="line_data_align">State: <span class="tx-gray-800" id="state1"></span></p>
+                                                <p class="line_data_align">Son/Wife/daughter: <span class="tx-gray-800" id="son_Wife_daughter"></span></p>
+                                                <p class="line_data_align">District: <span class="tx-gray-800" id="district"></span></p>
+                                                <p class="line_data_align">Mother Name: <span class="tx-gray-800" id="motherName"></span></p>
+                                                <p class="line_data_align">Name Of Trade: <span class="tx-gray-800" id="nameOfTrade"></span></p>
+                                                <p class="line_data_align">Name: <span class="tx-gray-800" id="name2"></span></p>
+                                                    
+                                                </div>
+                                            </div>
+                                            <!-- content 4-->
+                                            <div class="row all_pdf_content" id="content_smc_pdf">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <h5 class="card-title">Extracted Result</h5>
+                                                    @*<h5 class="card-title">School and Matric Certificate</h5>*@
+
+                                                <p class="line_data_align">Name: <span class="tx-gray-800" id="name3"></span></p>
+                                                <p class="line_data_align">Mother Name: <span class="tx-gray-800" id="motherName1"></span></p>
+                                                <p class="line_data_align">Gardian Name: <span class="tx-gray-800" id="gardianName"></span></p>
+                                                <p class="line_data_align">Board: <span class="tx-gray-800" id="board"></span></p>
+                                                    @*<p class="line_data_align">Total Marks In Words: <span class="tx-gray-800" id="total_marks_in_words"></span></p>
+                                                    <p class="line_data_align">Exam Held: <span class="tx-gray-800" id="exam_held"></span></p>
+                                                    <p class="line_data_align">Supw Grade: <span class="tx-gray-800" id="supw_grade"></span></p>
+                                                    <br>
+                                                    <h5 class="card-title"> Mark List</h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">S.No</th>
+                                                                <th scope="col">Subject</th>
+                                                                <th scope="col">1st Sem Weightage 50%</th>
+                                                                <th scope="col">2nd Sem Weightage 50%</th>
+                                                                <th scope="col">Mark Obtained</th>
+                                                                <th scope="col">Maximum Marks</th>
+                                                                <th scope="col">Grade</th>
+                                                                <th scope="col">Grade Point</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="html_table_content_marksheet1">
+                                                        </tbody>
+                                                    </table>*@
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab" style="text-align: left;">
+                                            <h5 class="card-title">Json Data</h5>
+                                            <textarea id="result_json" rows="20" cols="75" class="result_json"></textarea>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- br-section-wrapper -->
+            </div><!-- br-pagebody -->
+
+        </div>
+
+        <!-- main - display area  -->
+        <div id="base64_content" style="display:none"></div>
+        <script src="~/Asset/lib/jquery/jquery.js"></script>
+        <script src="~/Asset/lib/popper.js/popper.js"></script>
+        <script src="~/Asset/lib/bootstrap/bootstrap.js"></script>
+        <script src="~/Asset/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+        <script src="~/Asset/lib/moment/moment.js"></script>
+        <script src="~/Asset/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/Asset/lib/jquery-switchbutton/jquery.switchButton.js"></script>
+        <script src="~/Asset/lib/peity/jquery.peity.js"></script>
+        <script src="~/Asset/lib/highlightjs/highlight.pack.js"></script>
+        <script src="~/Asset/js/bracket.js"></script>
+        <!-- container-scroller -->
+        <!-- custom java script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+        <script src="~/Asset/Script/formpdf_extract.js"></script>
+</body>
+</html>
